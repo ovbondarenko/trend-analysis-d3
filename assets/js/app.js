@@ -61,6 +61,15 @@ function renderCircles(circlesGroup, newXScale, chosenXaxis) {
   return circlesGroup;
 }
 
+function renderTextLabels(textLabelsGroup, newXScale, chosenXaxis) {
+
+  textLabelsGroup.transition()
+    .duration(1000)
+    .attr("x", d => newXScale(d[chosenXAxis]));
+
+  return textLabelsGroup;
+}
+
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
 
@@ -130,7 +139,16 @@ d3.csv("assets/data/data.csv").then(data => {
   chartGroup.append("g")
     .call(leftAxis);
 
-   
+  var textLabelsGroup = chartGroup.selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("x", d => xLinearScale(d[chosenXAxis]))
+        .attr("y",  d => yLinearScale(d.healthcare))
+        .text(d =>{return d.abbr})
+
+        console.log(textLabelsGroup);
+
 
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
@@ -142,8 +160,6 @@ d3.csv("assets/data/data.csv").then(data => {
     .attr("r", 20)
     .attr("fill", "red")
     .attr("opacity", ".5")
-    // .append("text")
-    // .text(d=>d.abbr);
 
 
 // Create group for  2 x- axis labels
@@ -199,6 +215,9 @@ chartGroup.append("text")
 
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+        textLabelsGroup = renderTextLabels(textLabelsGroup, xLinearScale, chosenXAxis);
+        console.log(textLabelsGroup);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
