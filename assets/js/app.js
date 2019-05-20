@@ -128,6 +128,8 @@ d3.csv("assets/data/data.csv").then(data => {
   chartGroup.append("g")
     .call(leftAxis);
 
+   
+
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
     .data(data)
@@ -142,17 +144,8 @@ d3.csv("assets/data/data.csv").then(data => {
     .text(d=>d.abbr);
 
 
-   // svg.selectAll("text")
-    // .data(data)
-    // .enter()
-    // .append("text")
-    // .text(d => d.abbr)
-    // .attr("x", d => xLinearScale(d[chosenXAxis]))
-    // .attr("y", yLinearScale(d.healthcare));
-
-
 // Create group for  2 x- axis labels
-  var labelsGroup = chartGroup.append("g")
+var labelsGroup = chartGroup.append("g")
   .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
 var povertyLabel = labelsGroup.append("text")
@@ -170,16 +163,16 @@ var ageLabel = labelsGroup.append("text")
   .text("Age (Median)");
 
 
-      // append y axis
+// append y axis
 chartGroup.append("text")
-  .attr("transform")
-  .attr("y", 0 - margin.left)
-  .attr("x", 0 - (height / 2))
-  .attr("dy", "1em")
-  .classed("axis-text", true)
-  .text("Lacks healthcare, %");
+.attr("transform", "rotate(-90)")
+.attr("y", 0 - margin.left)
+.attr("x", 0 - (height / 2))
+.attr("dy", "1em")
+.classed("axis-text", true)
+.text("Lacks healthcare, %");
 
-
+  console.log(chartGroup);
   // updateToolTip function above csv import
   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
     console.log(circlesGroup, chosenXAxis)
