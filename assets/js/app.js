@@ -122,11 +122,10 @@ d3.csv("assets/data/data.csv").then(data => {
 
       // xLinearScale function above csv import
   var xLinearScale = xScale(data, chosenXAxis);
-  console.log(chosenXAxis, xLinearScale)
 
   // Create y scale function
   var yLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.healthcare)])
+    .domain([0, d3.max(data, d => d[chosenYAxis])])
     .range([height, 0]);
 
       // Create initial axis functions
@@ -148,7 +147,7 @@ d3.csv("assets/data/data.csv").then(data => {
         .enter()
         .append("text")
         .attr("x", d => xLinearScale(d[chosenXAxis]))
-        .attr("y", d => yLinearScale(d.healthcare))
+        .attr("y", d => yLinearScale(d[chosenYAxis]))
         .text(d =>{return d.abbr})
 
         console.log(textLabelsGroup);
@@ -160,7 +159,7 @@ d3.csv("assets/data/data.csv").then(data => {
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
-    .attr("cy", d => yLinearScale(d.healthcare))
+    .attr("cy", d => yLinearScale(d[chosenYAxis]))
     .attr("r", 20)
     .attr("fill", "red")
     .attr("opacity", ".5")
@@ -194,7 +193,7 @@ var incomeLabel = xLabelsGroup.append("text")
 // create a group of 3 y-axes labels
 var yLabelsGroup = chartGroup.append("g").attr("transform", "rotate(-90)");
 // append y axis
-var povertyLabel = yLabelsGroup.append("text")
+var healthcareLabel = yLabelsGroup.append("text")
   .attr("y", 40 - margin.left)
   .attr("x", 0 - (height / 2))
   .attr("dy", "1em")
@@ -202,7 +201,7 @@ var povertyLabel = yLabelsGroup.append("text")
   .classed("active", "true")
   .text("Lacks healthcare, %");
 
-  var povertyLabel = yLabelsGroup.append("text")
+  var smokerLabel = yLabelsGroup.append("text")
   .attr("y", 20 - margin.left)
   .attr("x", 0 - (height / 2))
   .attr("dy", "1em")
@@ -210,7 +209,7 @@ var povertyLabel = yLabelsGroup.append("text")
   .classed("inactive", "true")
   .text("Smokes, %");
 
-  var povertyLabel = yLabelsGroup.append("text")
+  var obesityLabel = yLabelsGroup.append("text")
   .attr("y", 0 - margin.left)
   .attr("x", 0 - (height / 2))
   .attr("dy", "1em")
